@@ -16,4 +16,6 @@ api.post("/login", ControladorUsuarios.ingresoUsuario);
 
 api.put("/actualizar-usuario/:id", md_aut.autenticacion, ControladorUsuarios.actualizarUsuario);
 
+api.delete("/borrar-usuario/:id",md_aut.autenticacion, ControladorUsuarios.borrarUsuario);
+
 module.exports = api;

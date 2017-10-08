@@ -79,8 +79,56 @@ function ingresoUsuario(req,res){
 
 }
 
+function actualizarUsuario(req,res){
+	var id= req.params.id;
+
+	var actualizar = req.body;
+
+	if(id != req.usuarioToken.sub){
+		return res.status(500).send({mensaje: "No tienes permisos para actualizar este usuario"});
+	}
+
+	//recorremos la base de datos con el método FindByIdAndUpdate
+	Usuarios.findByIdAndUpdate(id, actualizar, {new:true}, (error, usuarioActualizado)=>{
+
+		if(error){
+			res.status(500).send({mensaje: "Error al actualizar el usuario"});
+		}else{
+			if(!usuarioActualizado){
+				res.status(404).send({mensaje: "no se ha podido actualizar el usuario"});
+			}else{
+				res.status(200).send({usuarioActualizado});
+			}	
+		}
+	})
+
+
+
+}
+
+function borrarUsuario(req,res){
+
+	var id= req.params.id;
+
+	Usuarios.findByIdAndRemove(id, (error, usuarioBorrado)=>{
+
+		if(error){
+			res.status(500).send({mensaje:"Error al borrar el usuario"})
+		}else{
+			if(!usuarioBorrado){
+				res.status(404).send({mensaje:"No se ha podido borrar el usuario"})
+			}else{
+				res.status(200).send({usuarioBorrado})
+			}
+		}
+	})	
+
+}
+
 module.exports = {
 	pruebaUsuarios,
 	crearUsuarios,
-	ingresoUsuario
+	ingresoUsuario,
+	actualizarUsuario,
+	borrarUsuario
 }
