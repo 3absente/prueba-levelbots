@@ -21,4 +21,7 @@ api.post("/crear-foto", (md_aut.autentication, fichero), ControladorGalerias.cre
 
 api.get("/mostrar-galerias", ControladorGalerias.mostrarGalerias);
 
+api.delete("/borrar-foto/:id", md_aut.autenticacion, ControladorGalerias.borrarFoto);
+
+
 module.exports = api;

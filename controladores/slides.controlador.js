@@ -2,6 +2,9 @@
 
 
 var Slides = require("../modelos/slides.modelo.js");
+
+var fs = require("fs");
+
 //Método de prueba
 
 function pruebaSlides(req,res){
@@ -70,7 +73,25 @@ function actualizarSlide(req,res){
 		slides.imagen = parametros.rutaImagenActual;
 
 		noHayCambioImagen=true;
+	}else{
+
+
+		if(req.files){
+
+			var imagenRuta = req.files.imagen.path;
+			var imagenSplit = imagenRuta.split("\\");
+			slides.imagen =imagenSplit[2];
+
+			var antiguaImagen = parametros.rutaImagenActual;
+			var rutaImagen = "./ficheros/slides/"+antiguaImagen;
+
+			fs.unlink(rutaImagen);
+		}
+
+			cambioImagen = true;
+		
 	}
+	
 	if(cambioImagen){
 		if(slides.titulo != null && slides.descripcion !=null && slides.imagen!=null){
 
@@ -95,9 +116,54 @@ function actualizarSlide(req,res){
 	}
 }	
 
+
+function borrarSlide(req,res){
+
+
+	var id = req.params.id;
+
+	Slides.findOne({_id: id}, (error, capturarslide)=>{
+
+		if(error){
+			res.status(500).send({mensaje: " Error al capturar el Slide"})
+		}else{
+			if(!capturarslide){
+				res.status(404).send({mensaje: "No se ha podido capturar el Slide"})
+			}else{
+			
+				var antiguaImagen = capturarslide.imagen;
+				var rutaImagen = "./ficheros/slides/"+antiguaImagen;
+				fs.unlink(rutaImagen);
+
+			}
+		}
+
+	})
+
+	setTimeout(function(){
+		Slides.findByIdAndRemove(id, (error, borrarslide)=>{
+
+			if(error){
+				res.status(500).send({mensaje: " Error al borrar el Slide"})
+			}else{
+				if(!borrarslide){
+					res.status(404).send({mensaje: "No se ha podido borrar el Slide"})
+				}else{
+					res.status(200).send({borrarslide})
+				}
+			}
+
+		})
+
+	}, 1000)
+
+	
+}
+
 module.exports = {
 	pruebaSlides,
 	crearSlides,
 	mostrarSlides,
-	actualizarSlide
+	actualizarSlide,
+	borrarSlide
 }
