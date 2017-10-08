@@ -36,7 +36,19 @@ function crearFoto(req,res){
 	}
 }
 
+function mostrarGalerias(req,res){
+	Galerias.find((error,mostrandoGalerias)=>{
+
+		if(error){
+			res.status(500).send({mensaje: "Error en la petición"})
+		}else{
+			res.status(200).send({mostrandoGalerias})
+		}
+	}).sort("_id");
+}
+
 module.exports = {
 	pruebaGalerias,
-	crearFoto
+	crearFoto,
+	mostrarGalerias
 }

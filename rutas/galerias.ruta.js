@@ -19,4 +19,6 @@ api.get("/probando-controlador-galerias", ControladorGalerias.pruebaGalerias);
 
 api.post("/crear-foto", (md_aut.autentication, fichero), ControladorGalerias.crearFoto);
 
+api.get("/mostrar-galerias", ControladorGalerias.mostrarGalerias);
+
 module.exports = api;

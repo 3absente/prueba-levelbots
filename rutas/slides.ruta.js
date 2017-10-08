@@ -21,4 +21,6 @@ api.post("/crear-slide", (md_aut.autenticacion, fichero), ControladorSlides.crea
 
 api.get("/mostrar-slides", ControladorSlides.mostrarSlides);
 
+api.put("/actualizar-slide/:id",(md_aut.autenticacion, fichero), ControladorSlides.actualizarSlide);
+
 module.exports = api;
