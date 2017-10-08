@@ -1,21 +1,29 @@
-var express = require("express"),
-    app = express(),
-    bodyParser  = require("body-parser"),
-   //methodOverride = require("method-override");
-    mongoose = require('mongoose');
+"use strict"
 
-	app.use(bodyParser.urlencoded({ extended: false }));
-	app.use(bodyParser.json());
-	//app.use(methodOverride());
+var express = require("express");
+var bodyParser = require("body-parser");
 
-var router = express.Router();
+//Variable express
+var app = express();
 
-	router.get('/', function(req, res) {
-   		res.send("Hello World!");
-	});
 
-	app.use(router);
+//cargar rutas
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
-	app.listen(3000, function() {
-  		console.log("Node server running on http://localhost:3000");
-	});
+var rutaUsuarios = require("./rutas/usuarios.ruta.js");
+var rutaSlides = require("./rutas/slides.ruta.js");
+var rutaGalerias = require("./rutas/galerias.ruta.js");
+
+
+//rutas base
+/*app.get("/pruebas", function(req,res){
+	res.status(200).send({message: "Bienvenido"})
+})*/
+
+app.use("/api", rutaUsuarios);
+app.use("/api", rutaSlides);
+app.use("/api", rutaGalerias);
+
+//exportamos la clase app.js
+module.exports = app;
