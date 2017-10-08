@@ -6,6 +6,8 @@ var Galerias = require("../modelos/galerias.modelo.js");
 
 var fs = require("fs");
 
+var path = require("path");
+
 function pruebaGalerias(req,res){
 
 	res.status(200).send({mensaje: "Probando el controlador de galerias"});
@@ -22,7 +24,7 @@ function crearFoto(req,res){
 
 		var imagenRuta = req.files.imagen.path;
 		var imagenSplit = imagenRuta.split("\\");
-		galerias.imagen =imagenSplit[2];
+		galerias.foto =imagenSplit[2];
 		galerias.save((error, imagenGuardada)=>{
 			if(error){
 				res.status(500).send({mensaje: "Error al guardar la imagen"})
@@ -63,7 +65,7 @@ function borrarFoto(req,res){
 			
 				var antiguaImagen = capturarfoto.imagen;
 				var rutaImagen = "./ficheros/galeria/"+antiguaImagen;
-				//fs.unlink(rutaImagen);
+				fs.unlink(rutaImagen);
 
 			}
 		}
@@ -88,9 +90,27 @@ function borrarFoto(req,res){
 	}, 1000)
 }
 
+function tomarImagenGaleria(req,res){
+
+	var imagen = req.params.foto;
+	var rutaImagen = "./ficheros/galeria/"+imagen;
+
+	fs.exists(rutaImagen, function(exist){
+
+		if(exist){
+			res.sendFile(path.resolve(rutaImagen))
+		}else{
+			res.status(404).send({mensaje: "Imagen not found"})
+		}
+
+	})
+
+}
+
 module.exports = {
 	pruebaGalerias,
 	crearFoto,
 	mostrarGalerias,
-	borrarFoto
+	borrarFoto,
+	tomarImagenGaleria
 }

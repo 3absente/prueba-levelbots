@@ -4,7 +4,7 @@
 var Slides = require("../modelos/slides.modelo.js");
 
 var fs = require("fs");
-
+var path = require("path");
 //Método de prueba
 
 function pruebaSlides(req,res){
@@ -160,10 +160,28 @@ function borrarSlide(req,res){
 	
 }
 
+function tomarImagenSlide(req,res){
+
+	var imagen = req.params.imagen;
+	var rutaImagen = "./ficheros/slides/"+imagen;
+
+	fs.exists(rutaImagen, function(exist){
+
+		if(exist){
+			res.sendFile(path.resolve(rutaImagen))
+		}else{
+			res.status(404).send({mensaje: "Imagen not found"})
+		}
+
+	})
+
+}
+
 module.exports = {
 	pruebaSlides,
 	crearSlides,
 	mostrarSlides,
 	actualizarSlide,
-	borrarSlide
+	borrarSlide,
+	tomarImagenSlide
 }

@@ -23,5 +23,7 @@ api.get("/mostrar-galerias", ControladorGalerias.mostrarGalerias);
 
 api.delete("/borrar-foto/:id", md_aut.autenticacion, ControladorGalerias.borrarFoto);
 
+api.get("/tomar-imagen-galeria/:foto", ControladorGalerias.tomarImagenGaleria);
+
 
 module.exports = api;

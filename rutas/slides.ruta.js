@@ -25,4 +25,6 @@ api.put("/actualizar-slide/:id",(md_aut.autenticacion, fichero), ControladorSlid
 
 api.delete("/borrar-slide/:id", md_aut.autenticacion, ControladorSlides.borrarSlide);
 
+api.get("/tomar-imagen-slide/:imagen", ControladorSlides.tomarImagenSlide);
+
 module.exports = api;
